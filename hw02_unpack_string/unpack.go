@@ -2,7 +2,6 @@ package hw02unpackstring
 
 import (
 	"errors"
-	"fmt"
 	"strconv"
 	"strings"
 	"unicode"
@@ -47,17 +46,4 @@ func Unpack(s string) (string, error) {
 	}
 
 	return result.String(), nil
-}
-
-func main() {
-	tests := []string{"a4bc2d5e", "abcd", "3abc", "45", "aaa10b", "aaa0b", "", "d\n5abc"}
-
-	for _, t := range tests {
-		res, err := Unpack(t)
-		if err != nil {
-			fmt.Printf("%q => error: %v\n", t, err)
-		} else {
-			fmt.Printf("%q => %q\n", t, res)
-		}
-	}
 }
