@@ -18,11 +18,14 @@ func Unpack(s string) (string, error) {
 	stringUnicode := []rune(s)
 
 	for i, r := range stringUnicode {
-		if unicode.IsDigit(r) {
-			if i == 0 || unicode.IsDigit(stringUnicode[i-1]) {
-				return "", ErrInvalidString
-			}
+		if i == 0 && unicode.IsDigit(r) {
+			return "", ErrInvalidString
+		}
+		if i > 0 && unicode.IsDigit(r) && unicode.IsDigit(stringUnicode[i-1]) {
+			return "", ErrInvalidString
+		}
 
+		if unicode.IsDigit(r) {
 			repeatCount, _ := strconv.Atoi(string(r))
 
 			if repeatCount == 0 {
@@ -35,12 +38,9 @@ func Unpack(s string) (string, error) {
 				continue
 			}
 
-			// Добавляем символ repeatCount - 1 раз (один раз он уже добавился на итерации с буквой)
-			for j := 0; j < repeatCount-1; j++ {
-				result.WriteRune(stringUnicode[i-1])
-			}
+			subStringRepeat := strings.Repeat(string(stringUnicode[i-1]), repeatCount-1)
+			result.WriteString(subStringRepeat)
 		} else {
-			// Если это не цифра, просто записываем символ
 			result.WriteRune(r)
 		}
 	}
